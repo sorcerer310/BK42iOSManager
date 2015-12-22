@@ -105,7 +105,7 @@ NetHttpUtils *http;
  */
 -(void)initNYSegmentedControl{
     
-    NYSegmentedControl *sc = [[NYSegmentedControl alloc] initWithItems:@[@"回到三国",@"卧龙的考验",@"凶宅"]];
+    NYSegmentedControl *sc = [[NYSegmentedControl alloc] initWithItems:@[@"卧龙的考验",@"八阵图",@"凶宅"]];
     //如果要对该控件使用autolayout，必须使translatesAutoresizingMaskIntoConstraints为NO
     //以关闭该控件的Autoresizing的布局功能
     sc.translatesAutoresizingMaskIntoConstraints = NO;

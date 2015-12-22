@@ -94,8 +94,8 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RpP-r0-CzE">
                                 <rect key="frame" x="0.0" y="69" width="600" height="29"/>
                                 <segments>
-                                    <segment title="回到三国"/>
                                     <segment title="卧龙的考验"/>
+                                    <segment title="八阵图"/>
                                     <segment title="凶宅"/>
                                 </segments>
                             </segmentedControl>
