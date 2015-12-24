@@ -15,13 +15,21 @@
 @implementation ViewController
 
 @synthesize segmentControl;
-NetHttpUtils *http;
+@synthesize labelDumpIsReady;
+NetHttpUtils *http;                                                             //用于通讯的http对象
+UIButton *btDumpIsReady;                                                        //敲鼓状态的按钮
+UIImage *imgDumpIsReady;                                                        //敲鼓状态准备好的绿色按钮
+UIImage *imgDumpIsNotReady;                                                     //敲鼓状态未准备好的红色按钮
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     //设置服务器路径
-    http = [[NetHttpUtils alloc] initWithUrlPath:@"http://192.168.1.112:8080/pgc2/plc_send_serial?"];
+    http = [[NetHttpUtils alloc] initWithUrlPath:@"http://192.168.1.112:8080/pgc2/"];
+//    http = [[NetHttpUtils alloc] initWithUrlPath:@"http://192.168.199.202:8080/pgc2/"];
+    //初始化按钮的两个状态图片
+    imgDumpIsReady = [UIImage imageNamed:@"dumpIsReady.png"];
+    imgDumpIsNotReady = [UIImage imageNamed:@"dumpIsNotReady.png"];
     //初始化第一个界面
     [self setupButtonForMyCollectionView0];
     self.myCollectionView.delegate = self;
@@ -29,6 +37,7 @@ NetHttpUtils *http;
     //处理SegmentControl点击
     [segmentControl addTarget:self action:@selector(segmentControlAction:) forControlEvents:UIControlEventValueChanged];
 
+    
     [self.segmentControl setHidden:YES];
     [self initNYSegmentedControl];
     
@@ -59,25 +68,29 @@ NetHttpUtils *http;
     }
 }
 
+
+
 /**
  *  设置回到三国的所有的按钮
  */
 -(void)setupButtonForMyCollectionView0{
     self.dataMArr = [NSMutableArray array];
-    [self.dataMArr addObject:@{@"text":@"复位",@"down":@"type=click&area=w&address1=000500&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"通道锁1",@"down":@"type=click&area=w&address1=000501&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"通道锁2",@"down":@"type=click&area=w&address1=000502&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"船舱锁",@"down":@"type=click&area=w&address1=000503&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"祭坛锁",@"down":@"type=click&area=w&address1=000504&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"大道锁",@"down":@"type=click&area=w&address1=000505&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"华容道锁",@"down":@"type=click&area=w&address1=000506&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"通关锁",@"down":@"type=click&area=w&address1=000507&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"星阵门开",@"down":@"type=h-bridge&area=w&address1=000600&address2=000700&val1=00&val2=01&readOrWrite=write",@"up":@"type=nomal&area=w&address1=000700&val1=00&readOrWrite=write"}];
-    [self.dataMArr addObject:@{@"text":@"星阵门关",@"down":@"type=h-bridge&area=w&address1=000600&address2=000700&val1=01&val2=00&readOrWrite=write",@"up":@"type=nomal&area=w&address1=000600&val1=00&readOrWrite=write"}];
-    [self.dataMArr addObject:@{@"text":@"地图门开",@"down":@"type=h-bridge&area=w&address1=000601&address2=000701&val1=00&val2=01&readOrWrite=write",@"up":@"type=nomal&area=w&address1=000701&val1=00&readOrWrite=write"}];
-    [self.dataMArr addObject:@{@"text":@"地图门关",@"down":@"type=h-bridge&area=w&address1=000601&address2=000701&val1=01&val2=00&readOrWrite=write",@"up":@"type=nomal&area=w&address1=000601&val1=00&readOrWrite=write"}];
-    [self.dataMArr addObject:@{@"text":@"祭坛门开",@"down":@"type=h-bridge&area=w&address1=000602&address2=000702&val1=00&val2=01&readOrWrite=write",@"up":@"type=nomal&area=w&address1=000702&val1=00&readOrWrite=write"}];
-    [self.dataMArr addObject:@{@"text":@"祭坛门关",@"down":@"type=h-bridge&area=w&address1=000602&address2=000702&val1=01&val2=00&readOrWrite=write",@"up":@"type=nomal&area=w&address1=000602&val1=00&readOrWrite=write"}];
+    [self.dataMArr addObject:@{@"text":@"复位",@"down":@"plc_send_serial?type=click&area=w&address1=000500&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"通道锁1",@"down":@"plc_send_serial?type=click&area=w&address1=000501&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"通道锁2",@"down":@"plc_send_serial?type=click&area=w&address1=000502&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"船舱锁",@"down":@"plc_send_serial?type=click&area=w&address1=000503&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"祭坛锁",@"down":@"plc_send_serial?type=click&area=w&address1=000504&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"大道锁",@"down":@"plc_send_serial?type=click&area=w&address1=000505&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"华容道锁",@"down":@"plc_send_serial?type=click&area=w&address1=000506&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"通关锁",@"down":@"plc_send_serial?type=click&area=w&address1=000507&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"星阵门开",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000600&address2=000700&val1=00&val2=01&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000700&val1=00&readOrWrite=write"}];
+    [self.dataMArr addObject:@{@"text":@"星阵门关",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000600&address2=000700&val1=01&val2=00&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000600&val1=00&readOrWrite=write"}];
+    [self.dataMArr addObject:@{@"text":@"地图门开",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000601&address2=000701&val1=00&val2=01&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000701&val1=00&readOrWrite=write"}];
+    [self.dataMArr addObject:@{@"text":@"地图门关",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000601&address2=000701&val1=01&val2=00&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000601&val1=00&readOrWrite=write"}];
+    [self.dataMArr addObject:@{@"text":@"祭坛门开",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000602&address2=000702&val1=00&val2=01&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000702&val1=00&readOrWrite=write"}];
+    [self.dataMArr addObject:@{@"text":@"祭坛门关",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000602&address2=000702&val1=01&val2=00&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000602&val1=00&readOrWrite=write"}];
+    [self.dataMArr addObject:@{@"text":@"敲鼓状态",@"down":@"plc_state_query?point=dumpIsReady",@"up":@""}];
+    
     
     [self.myCollectionView reloadData];
 }
@@ -157,16 +170,60 @@ NetHttpUtils *http;
 //    [cell.button setTitle:dic[@"text"] forState:UIControlStateNormal];
     [cell.label setText:dic[@"text"]];
     [cell.button.layer setCornerRadius:35.0f];
-    [cell.button setImage:[UIImage imageNamed:@"Resources/bt_icon1.png"] forState:UIControlStateNormal];
     cell.upcmd = dic[@"up"];
     cell.downcmd = dic[@"down"];
-    [cell.button addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
-    [cell.button addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+    if(![dic[@"text"] isEqualToString:@"敲鼓状态"]){
+        [cell.button setBackgroundImage:[UIImage imageNamed:@"bt_icon1.png"] forState:UIControlStateNormal];
+        [cell.button addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
+        [cell.button addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        btDumpIsReady = cell.button;
+        btDumpIsReady.layer.borderColor = [UIColor grayColor].CGColor;
+        btDumpIsReady.layer.borderWidth = 2;
+        [btDumpIsReady setBackgroundImage:imgDumpIsNotReady forState:UIControlStateNormal];
+        [btDumpIsReady setBackgroundColor:[UIColor colorWithRed:0.8f green:0.2f blue:0.2f alpha:.5f]];
+        [btDumpIsReady addTarget:self action:@selector(dumpTouchDown:) forControlEvents:UIControlEventTouchDown];
+        
+    }
     return cell;
 }
 
+/**
+ *  要想显示出CollectionView中的footer或者header需要实现以下方法
+ *
+ *  @param collectionView CollectionView对象
+ *  @param kind           <#kind description#>
+ *  @param indexPath      <#indexPath description#>
+ *
+ *  @return <#return value description#>
+ */
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath{
+    MyCollectionReusableView *reusableview = nil;
+    if(kind == UICollectionElementKindSectionHeader){
+        UICollectionReusableView *headerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
+        //获得header视图
+        reusableview = (MyCollectionReusableView *)headerview;
+        //设置显示鼓状态的label
+        labelDumpIsReady = reusableview.labelDumpIsReady;
+        reusableview.labelDumpIsReady.layer.backgroundColor = [UIColor colorWithRed:0.8f green:0.2f blue:0.2f alpha:1.0f].CGColor;
+        reusableview.labelDumpIsReady.layer.cornerRadius = 22;
+        reusableview.labelDumpIsReady.layer.borderWidth = 2;
+        reusableview.labelDumpIsReady.layer.borderColor = [UIColor grayColor].CGColor;
+        
+        //设置标题label的样式
+        reusableview.labelTitle.layer.backgroundColor=[UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f].CGColor;
+        reusableview.labelTitle.layer.cornerRadius = 8;
+        reusableview.labelTitle.layer.borderWidth = 2;
+        reusableview.labelTitle.layer.borderColor = [UIColor grayColor].CGColor;
+
+    }
+    return reusableview;
+}
+/**
+ *  普通按钮按下操作
+ *
+ *  @param sender 发送消息的对象
+ */
 -(void)touchDown:(UIButton*)sender{
 //    sender.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:170.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
     if([sender.superview.superview isKindOfClass:[MyCollectionViewCell class]]){
@@ -176,7 +233,11 @@ NetHttpUtils *http;
         }
     }
 }
-
+/**
+ *  普通按钮抬起操作
+ *
+ *  @param sender 发送消息的对象
+ */
 -(void)touchUp:(UIButton*)sender{
 //        sender.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
     if([sender.superview.superview isKindOfClass:[MyCollectionViewCell class]]){
@@ -185,6 +246,32 @@ NetHttpUtils *http;
             [http sendCommand:cell.upcmd];
         }
     }
+}
+/**
+ *  鼓状态按钮按下操作
+ *
+ *  @param sender <#sender description#>
+ */
+-(void)dumpTouchDown:(UIButton*)sender{
+    if([sender.superview.superview isKindOfClass:[MyCollectionViewCell class]]){
+        MyCollectionViewCell *cell = (MyCollectionViewCell *)(sender.superview.superview);
+        if(![cell.downcmd isEqualToString:@""]){
+            [http sendCommand:cell.downcmd];
+            http.delegate = self;
+        }
+    }
+}
+/**
+ *  当鼓状态请求返回数据时做如下处理
+ *  @param data 向http服务器请求返回的数据
+ */
+-(void)receiveData:(NSString *)data{
+    if([data isEqualToString:@"false"]){
+        [btDumpIsReady setBackgroundImage:imgDumpIsNotReady forState:UIControlStateNormal];
+    }else if([data isEqualToString:@"true"]){
+        [btDumpIsReady setBackgroundImage:imgDumpIsReady forState:UIControlStateNormal];
+    }
+
 }
 
 

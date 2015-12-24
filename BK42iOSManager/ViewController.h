@@ -10,13 +10,15 @@
 #import "MyCollectionViewCell.h"
 #import "NetHttpUtils.h"
 #import "NYSegmentedControl.h"
+#import "MyCollectionReusableView.h"
 
-@interface ViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate>
-@property (strong, nonatomic)NSMutableArray *dataMArr;
-@property (weak, nonatomic) IBOutlet UICollectionView *myCollectionView;
+@interface ViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,NetHttpUtilsDelegate>
+@property (strong, nonatomic)NSMutableArray *dataMArr;                          //CollectionViewCell数据源
+@property (weak, nonatomic) IBOutlet UICollectionView *myCollectionView;        //CollectionView对象
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;            //导航条
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;        //选项卡对象
+@property (weak, nonatomic) IBOutlet UILabel *labelDumpIsReady;                 //敲鼓状态显示
 
 @end
 

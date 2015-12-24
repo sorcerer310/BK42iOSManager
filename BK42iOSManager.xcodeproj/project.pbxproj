@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		7115F7DF1C152E1300A32410 /* NetHttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7115F7DE1C152E1300A32410 /* NetHttpUtils.m */; };
+		7162DEC11C2BA33A00D0CB63 /* MyCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7162DEC01C2BA33A00D0CB63 /* MyCollectionReusableView.m */; };
+		7162DEC41C2BC36C00D0CB63 /* MyCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7162DEC31C2BC36C00D0CB63 /* MyCollectionView.m */; };
+		7162DEC71C2C05F400D0CB63 /* dumpIsNotReady.png in Resources */ = {isa = PBXBuildFile; fileRef = 7162DEC51C2C05F400D0CB63 /* dumpIsNotReady.png */; };
+		7162DEC81C2C05F400D0CB63 /* dumpIsReady.png in Resources */ = {isa = PBXBuildFile; fileRef = 7162DEC61C2C05F400D0CB63 /* dumpIsReady.png */; };
 		7174BE8B1C1A781D00F60593 /* MySegmentControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7174BE8A1C1A781D00F60593 /* MySegmentControl.m */; };
 		71A0CFDB1C1021D200FBA8D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0CFDA1C1021D200FBA8D2 /* main.m */; };
 		71A0CFDE1C1021D300FBA8D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0CFDD1C1021D300FBA8D2 /* AppDelegate.m */; };
@@ -34,6 +38,12 @@
 /* Begin PBXFileReference section */
 		7115F7DD1C152E1300A32410 /* NetHttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetHttpUtils.h; sourceTree = "<group>"; };
 		7115F7DE1C152E1300A32410 /* NetHttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetHttpUtils.m; sourceTree = "<group>"; };
+		7162DEBF1C2BA33A00D0CB63 /* MyCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCollectionReusableView.h; sourceTree = "<group>"; };
+		7162DEC01C2BA33A00D0CB63 /* MyCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectionReusableView.m; sourceTree = "<group>"; };
+		7162DEC21C2BC36C00D0CB63 /* MyCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCollectionView.h; sourceTree = "<group>"; };
+		7162DEC31C2BC36C00D0CB63 /* MyCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectionView.m; sourceTree = "<group>"; };
+		7162DEC51C2C05F400D0CB63 /* dumpIsNotReady.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dumpIsNotReady.png; sourceTree = "<group>"; };
+		7162DEC61C2C05F400D0CB63 /* dumpIsReady.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dumpIsReady.png; sourceTree = "<group>"; };
 		7174BE891C1A781D00F60593 /* MySegmentControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySegmentControl.h; sourceTree = "<group>"; };
 		7174BE8A1C1A781D00F60593 /* MySegmentControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySegmentControl.m; sourceTree = "<group>"; };
 		71A0CFD61C1021D200FBA8D2 /* BK42iOSManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BK42iOSManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +125,10 @@
 				71A0CFF71C10387C00FBA8D2 /* MyCollectionViewCell.m */,
 				7174BE891C1A781D00F60593 /* MySegmentControl.h */,
 				7174BE8A1C1A781D00F60593 /* MySegmentControl.m */,
+				7162DEBF1C2BA33A00D0CB63 /* MyCollectionReusableView.h */,
+				7162DEC01C2BA33A00D0CB63 /* MyCollectionReusableView.m */,
+				7162DEC21C2BC36C00D0CB63 /* MyCollectionView.h */,
+				7162DEC31C2BC36C00D0CB63 /* MyCollectionView.m */,
 			);
 			path = BK42iOSManager;
 			sourceTree = "<group>";
@@ -130,6 +144,8 @@
 		71E53F6C1C1ED36800472493 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7162DEC51C2C05F400D0CB63 /* dumpIsNotReady.png */,
+				7162DEC61C2C05F400D0CB63 /* dumpIsReady.png */,
 				71F0F8911C28EF44007FE9BD /* Icon-60@2x.png */,
 				71F0F8921C28EF44007FE9BD /* Icon-72.png */,
 				71F0F8931C28EF44007FE9BD /* Icon-72@2x.png */,
@@ -217,11 +233,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7162DEC81C2C05F400D0CB63 /* dumpIsReady.png in Resources */,
 				71F0F89A1C28EF44007FE9BD /* Icon-72@2x.png in Resources */,
 				71F0F89C1C28EF44007FE9BD /* Icon-76@2x.png in Resources */,
 				71F0F89D1C28EF44007FE9BD /* Icon.png in Resources */,
 				71F0F89B1C28EF44007FE9BD /* Icon-76.png in Resources */,
 				71A0CFEC1C1021D300FBA8D2 /* LaunchScreen.storyboard in Resources */,
+				7162DEC71C2C05F400D0CB63 /* dumpIsNotReady.png in Resources */,
 				71F0F89E1C28EF44007FE9BD /* Icon@2x.png in Resources */,
 				71F0F8981C28EF44007FE9BD /* Icon-60@2x.png in Resources */,
 				71A0CFE91C1021D300FBA8D2 /* Assets.xcassets in Resources */,
@@ -243,6 +261,8 @@
 				71A0CFE11C1021D300FBA8D2 /* ViewController.m in Sources */,
 				71E53F791C1F016500472493 /* NYSegmentedControl.m in Sources */,
 				71A0CFDE1C1021D300FBA8D2 /* AppDelegate.m in Sources */,
+				7162DEC11C2BA33A00D0CB63 /* MyCollectionReusableView.m in Sources */,
+				7162DEC41C2BC36C00D0CB63 /* MyCollectionView.m in Sources */,
 				7115F7DF1C152E1300A32410 /* NetHttpUtils.m in Sources */,
 				71E53F7A1C1F016500472493 /* NYSegmentIndicator.m in Sources */,
 				71A0CFDB1C1021D200FBA8D2 /* main.m in Sources */,
