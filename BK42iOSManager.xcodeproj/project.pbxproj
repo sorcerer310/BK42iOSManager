@@ -12,6 +12,7 @@
 		7162DEC41C2BC36C00D0CB63 /* MyCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7162DEC31C2BC36C00D0CB63 /* MyCollectionView.m */; };
 		7162DEC71C2C05F400D0CB63 /* dumpIsNotReady.png in Resources */ = {isa = PBXBuildFile; fileRef = 7162DEC51C2C05F400D0CB63 /* dumpIsNotReady.png */; };
 		7162DEC81C2C05F400D0CB63 /* dumpIsReady.png in Resources */ = {isa = PBXBuildFile; fileRef = 7162DEC61C2C05F400D0CB63 /* dumpIsReady.png */; };
+		7162DEC91C2C292300D0CB63 /* dumpIsNotReady.png in Frameworks */ = {isa = PBXBuildFile; fileRef = 7162DEC51C2C05F400D0CB63 /* dumpIsNotReady.png */; };
 		7174BE8B1C1A781D00F60593 /* MySegmentControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7174BE8A1C1A781D00F60593 /* MySegmentControl.m */; };
 		71A0CFDB1C1021D200FBA8D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0CFDA1C1021D200FBA8D2 /* main.m */; };
 		71A0CFDE1C1021D300FBA8D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0CFDD1C1021D300FBA8D2 /* AppDelegate.m */; };
@@ -82,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7162DEC91C2C292300D0CB63 /* dumpIsNotReady.png in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

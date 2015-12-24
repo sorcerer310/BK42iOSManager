@@ -197,28 +197,28 @@ UIImage *imgDumpIsNotReady;                                                     
  *
  *  @return <#return value description#>
  */
--(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath{
-    MyCollectionReusableView *reusableview = nil;
-    if(kind == UICollectionElementKindSectionHeader){
-        UICollectionReusableView *headerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
-        //获得header视图
-        reusableview = (MyCollectionReusableView *)headerview;
-        //设置显示鼓状态的label
-        labelDumpIsReady = reusableview.labelDumpIsReady;
-        reusableview.labelDumpIsReady.layer.backgroundColor = [UIColor colorWithRed:0.8f green:0.2f blue:0.2f alpha:1.0f].CGColor;
-        reusableview.labelDumpIsReady.layer.cornerRadius = 22;
-        reusableview.labelDumpIsReady.layer.borderWidth = 2;
-        reusableview.labelDumpIsReady.layer.borderColor = [UIColor grayColor].CGColor;
-        
-        //设置标题label的样式
-        reusableview.labelTitle.layer.backgroundColor=[UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f].CGColor;
-        reusableview.labelTitle.layer.cornerRadius = 8;
-        reusableview.labelTitle.layer.borderWidth = 2;
-        reusableview.labelTitle.layer.borderColor = [UIColor grayColor].CGColor;
-
-    }
-    return reusableview;
-}
+//-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath{
+//    MyCollectionReusableView *reusableview = nil;
+//    if(kind == UICollectionElementKindSectionHeader){
+//        UICollectionReusableView *headerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
+//        //获得header视图
+//        reusableview = (MyCollectionReusableView *)headerview;
+//        //设置显示鼓状态的label
+//        labelDumpIsReady = reusableview.labelDumpIsReady;
+//        reusableview.labelDumpIsReady.layer.backgroundColor = [UIColor colorWithRed:0.8f green:0.2f blue:0.2f alpha:1.0f].CGColor;
+//        reusableview.labelDumpIsReady.layer.cornerRadius = 22;
+//        reusableview.labelDumpIsReady.layer.borderWidth = 2;
+//        reusableview.labelDumpIsReady.layer.borderColor = [UIColor grayColor].CGColor;
+//        
+//        //设置标题label的样式
+//        reusableview.labelTitle.layer.backgroundColor=[UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f].CGColor;
+//        reusableview.labelTitle.layer.cornerRadius = 8;
+//        reusableview.labelTitle.layer.borderWidth = 2;
+//        reusableview.labelTitle.layer.borderColor = [UIColor grayColor].CGColor;
+//
+//    }
+//    return reusableview;
+//}
 /**
  *  普通按钮按下操作
  *

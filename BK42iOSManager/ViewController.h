@@ -18,7 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;            //导航条
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;        //选项卡对象
-@property (weak, nonatomic) IBOutlet UILabel *labelDumpIsReady;                 //敲鼓状态显示
+//@property (weak, nonatomic) IBOutlet UILabel *labelDumpIsReady;                 //敲鼓状态显示
 
 @end
 
