@@ -15,7 +15,7 @@
 @implementation ViewController
 
 @synthesize segmentControl;
-@synthesize labelDumpIsReady;
+//@synthesize labelDumpIsReady;
 NetHttpUtils *http;                                                             //用于通讯的http对象
 UIButton *btDumpIsReady;                                                        //敲鼓状态的按钮
 UIImage *imgDumpIsReady;                                                        //敲鼓状态准备好的绿色按钮
