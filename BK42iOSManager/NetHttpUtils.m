@@ -41,7 +41,14 @@
     NSURL *url = [NSURL URLWithString:[urlpath stringByAppendingString:command]];
 //    NSLog(@"%@",url);
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    config.timeoutIntervalForRequest = 3;
+    config.timeoutIntervalForResource = 3;
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+//    NSURLSession *session = [NSURLSession sharedSession];
+//    session.configuration.timeoutIntervalForRequest = 3;
+//    session.configuration.timeoutIntervalForResource = 3;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:
                                   ^(NSData *data,NSURLResponse *response,NSError *error){

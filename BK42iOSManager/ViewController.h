@@ -11,6 +11,7 @@
 #import "NetHttpUtils.h"
 #import "NYSegmentedControl.h"
 #import "MyCollectionReusableView.h"
+#import "MJRefresh.h"
 
 @interface ViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,NetHttpUtilsDelegate>
 @property (strong, nonatomic)NSMutableArray *dataMArr;                          //CollectionViewCell数据源
