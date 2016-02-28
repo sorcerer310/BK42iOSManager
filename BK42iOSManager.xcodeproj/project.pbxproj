@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		7115F7DF1C152E1300A32410 /* NetHttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7115F7DE1C152E1300A32410 /* NetHttpUtils.m */; };
-		7162DEC11C2BA33A00D0CB63 /* MyCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7162DEC01C2BA33A00D0CB63 /* MyCollectionReusableView.m */; };
 		7162DEC41C2BC36C00D0CB63 /* MyCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7162DEC31C2BC36C00D0CB63 /* MyCollectionView.m */; };
 		7162DEC71C2C05F400D0CB63 /* dumpIsNotReady.png in Resources */ = {isa = PBXBuildFile; fileRef = 7162DEC51C2C05F400D0CB63 /* dumpIsNotReady.png */; };
 		7162DEC81C2C05F400D0CB63 /* dumpIsReady.png in Resources */ = {isa = PBXBuildFile; fileRef = 7162DEC61C2C05F400D0CB63 /* dumpIsReady.png */; };
@@ -58,8 +57,6 @@
 /* Begin PBXFileReference section */
 		7115F7DD1C152E1300A32410 /* NetHttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetHttpUtils.h; sourceTree = "<group>"; };
 		7115F7DE1C152E1300A32410 /* NetHttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetHttpUtils.m; sourceTree = "<group>"; };
-		7162DEBF1C2BA33A00D0CB63 /* MyCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCollectionReusableView.h; sourceTree = "<group>"; };
-		7162DEC01C2BA33A00D0CB63 /* MyCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectionReusableView.m; sourceTree = "<group>"; };
 		7162DEC21C2BC36C00D0CB63 /* MyCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCollectionView.h; sourceTree = "<group>"; };
 		7162DEC31C2BC36C00D0CB63 /* MyCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectionView.m; sourceTree = "<group>"; };
 		7162DEC51C2C05F400D0CB63 /* dumpIsNotReady.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dumpIsNotReady.png; sourceTree = "<group>"; };
@@ -279,8 +276,6 @@
 				71A0CFF71C10387C00FBA8D2 /* MyCollectionViewCell.m */,
 				7174BE891C1A781D00F60593 /* MySegmentControl.h */,
 				7174BE8A1C1A781D00F60593 /* MySegmentControl.m */,
-				7162DEBF1C2BA33A00D0CB63 /* MyCollectionReusableView.h */,
-				7162DEC01C2BA33A00D0CB63 /* MyCollectionReusableView.m */,
 				7162DEC21C2BC36C00D0CB63 /* MyCollectionView.h */,
 				7162DEC31C2BC36C00D0CB63 /* MyCollectionView.m */,
 			);
@@ -424,7 +419,6 @@
 				7162DF021C2E39AA00D0CB63 /* MJRefreshGifHeader.m in Sources */,
 				71E53F791C1F016500472493 /* NYSegmentedControl.m in Sources */,
 				71A0CFDE1C1021D300FBA8D2 /* AppDelegate.m in Sources */,
-				7162DEC11C2BA33A00D0CB63 /* MyCollectionReusableView.m in Sources */,
 				7162DEFA1C2E39AA00D0CB63 /* MJRefreshFooter.m in Sources */,
 				7162DEC41C2BC36C00D0CB63 /* MyCollectionView.m in Sources */,
 				7162DEF91C2E39AA00D0CB63 /* MJRefreshComponent.m in Sources */,

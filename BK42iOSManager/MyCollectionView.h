@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MyCollectionView : UICollectionView
-
+@property (nonatomic,strong) NSMutableArray * stateCells;                         //用来保存当前CollectionView中所有的state cell
 
 @end

@@ -13,12 +13,16 @@
 @synthesize button;
 @synthesize upcmd;
 @synthesize downcmd;
+@synthesize cellType;
+@synthesize stateBack;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        cellType = TYPEBUTTON;
+        stateBack = NO;
     }
     return self;
 }

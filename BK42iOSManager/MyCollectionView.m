@@ -9,9 +9,14 @@
 #import "MyCollectionView.h"
 
 @implementation MyCollectionView
+@synthesize stateCells;
 
-//-(id)init{
-//    NSLog(@"-------------");
-//}
+-(id)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self!=nil){
+        stateCells = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
 
 @end

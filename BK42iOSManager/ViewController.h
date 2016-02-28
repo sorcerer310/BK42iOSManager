@@ -10,7 +10,7 @@
 #import "MyCollectionViewCell.h"
 #import "NetHttpUtils.h"
 #import "NYSegmentedControl.h"
-#import "MyCollectionReusableView.h"
+#import "MyCollectionView.h"
 #import "MJRefresh.h"
 
 @interface ViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,NetHttpUtilsDelegate>
