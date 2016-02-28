@@ -15,7 +15,7 @@
 
 @interface ViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,NetHttpUtilsDelegate>
 @property (strong, nonatomic)NSMutableArray *dataMArr;                          //CollectionViewCell数据源
-@property (weak, nonatomic) IBOutlet UICollectionView *myCollectionView;        //CollectionView对象
+@property (weak, nonatomic) IBOutlet MyCollectionView *myCollectionView;        //CollectionView对象
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;            //导航条
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;        //选项卡对象

@@ -38,6 +38,7 @@ NSArray<NSString*> *urlPathArray;                                               
     imgDumpIsNotReady = [UIImage imageNamed:@"dumpIsNotReady.png"];
     //初始化第一个界面
     [self setupButtonForMyCollectionView0];
+    self.myCollectionView.stateCells = [[NSMutableArray alloc]init];
     self.myCollectionView.delegate = self;
     self.myCollectionView.dataSource = self;
     //处理SegmentControl点击
@@ -49,7 +50,7 @@ NSArray<NSString*> *urlPathArray;                                               
     //设置下拉刷新操作，块中的内容表示下拉刷新后要做的操作
     MJRefreshStateHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
-        NSMutableArray *cells = ((MyCollectionView*)self.myCollectionView).stateCells;
+        NSMutableArray *cells = self.myCollectionView.stateCells;
         for (NSInteger i=0; i<cells.count; i++) {
             MyCollectionViewCell *cell = cells[i];
             if(cell.cellType==TYPESTATE){
@@ -89,7 +90,8 @@ NSArray<NSString*> *urlPathArray;                                               
             http.urlpath = urlPathArray[2];
             break;
     }
-    [self.myCollectionView.mj_header executeRefreshingCallback];
+    [self.myCollectionView.mj_header executeRefreshingCallback];                //执行刷新的操作
+//    [self.myCollectionView.mj_header beginRefreshing];                          //执行刷新的开始动画
 }
 
 
@@ -171,7 +173,7 @@ NSArray<NSString*> *urlPathArray;                                               
     [self.dataMArr addObject:@{@"text":@"投影仪亮",@"down":[http makeClickWWriteURL:@"00010C" addValue:@"01"],@"up":@""}];
     [self.dataMArr addObject:@{@"text":@"屏风门开",@"down":[http makeClickWWriteURL:@"00010B" addValue:@"01"],@"up":@""}];
     [self.dataMArr addObject:@{@"text":@"四画灯灭",@"down":[http makeClickWWriteURL:@"000600" addValue:@"01"],@"up":@""}];
-    
+    [self.dataMArr addObject:@{@"text":@"女鬼音效",@"down":[http makeClickWWriteURL:@"" addValue:@""],@"up":@""}];
     [self.dataMArr addObject:@{@"text":@"床抽屉回",@"down":[http makeHBWWriteURL:@"000000" addValue1:@"01" address2:@"000200" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000000" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"床抽屉出",@"down":[http makeHBWWriteURL:@"000200" addValue1:@"01" address2:@"000000" addValue2:@""],@"up":[http makeNomalWWrite:@"000200" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"结婚照开",@"down":[http makeHBWWriteURL:@"000201" addValue1:@"01" address2:@"000001" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000201" addValue:@"00"]}];
@@ -264,7 +266,7 @@ NSArray<NSString*> *urlPathArray;                                               
         [cell.button setBackgroundImage:imgDumpIsNotReady forState:UIControlStateNormal];
         [cell.button addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
         
-        [((MyCollectionView*)self.myCollectionView).stateCells addObject:cell]; //将state cell加入stateCells数组
+        [self.myCollectionView.stateCells addObject:cell]; //将state cell加入stateCells数组
     }
     return cell;
 }

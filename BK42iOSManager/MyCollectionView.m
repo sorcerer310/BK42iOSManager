@@ -14,7 +14,7 @@
 -(id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self!=nil){
-        stateCells = [[NSMutableArray alloc] init];
+//        stateCells = [[NSMutableArray alloc] init];
     }
     return self;
 }
