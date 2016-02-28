@@ -53,7 +53,7 @@ NSArray<NSString*> *urlPathArray;                                               
         NSMutableArray *cells = self.myCollectionView.stateCells;
         for (NSInteger i=0; i<cells.count; i++) {
             MyCollectionViewCell *cell = cells[i];
-            if(cell.cellType==TYPESTATE){
+            if(cell.cellType==TYPESTATE && ![cell.downcmd isEqualToString:@""]){
                 [http sendCommand:cell.downcmd sender:cell];
             }
         }
@@ -80,17 +80,20 @@ NSArray<NSString*> *urlPathArray;                                               
         case 0:
             [self setupButtonForMyCollectionView0];
             http.urlpath = urlPathArray[0];
+            [self.myCollectionView.mj_header executeRefreshingCallback];        //执行刷新的操作
             break;
         case 1:
             [self setupButtonForMyCollectionView1];
             http.urlpath = urlPathArray[1];
+            [self.myCollectionView.mj_header executeRefreshingCallback];        //执行刷新的操作
             break;
         case 2:
             [self setupButtonForMyCollectionView2];
             http.urlpath = urlPathArray[2];
+            [self.myCollectionView.mj_header executeRefreshingCallback];        //执行刷新的操作
             break;
     }
-    [self.myCollectionView.mj_header executeRefreshingCallback];                //执行刷新的操作
+
 //    [self.myCollectionView.mj_header beginRefreshing];                          //执行刷新的开始动画
 }
 
@@ -118,6 +121,7 @@ NSArray<NSString*> *urlPathArray;                                               
     [self.dataMArr addObject:@{@"text":@"祭坛门开",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000602&address2=000702&val1=00&val2=01&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000702&val1=00&readOrWrite=write"}];
     [self.dataMArr addObject:@{@"text":@"祭坛门关",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000602&address2=000702&val1=01&val2=00&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000602&val1=00&readOrWrite=write"}];
 
+    [self.myCollectionView.stateCells removeAllObjects];
     [self.myCollectionView reloadData];
 }
 
@@ -155,6 +159,7 @@ NSArray<NSString*> *urlPathArray;                                               
     [self.dataMArr addObject:@{@"text":@"玄武桥升",@"down":[http makeHBWWriteURL:@"000604" addValue1:@"01" address2:@"000504" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000604" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"玄武桥降",@"down":[http makeHBWWriteURL:@"000504" addValue1:@"01" address2:@"000604" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000504" addValue:@"00"]}];
     
+    [self.myCollectionView.stateCells removeAllObjects];
     [self.myCollectionView reloadData];
 }
 
@@ -180,6 +185,8 @@ NSArray<NSString*> *urlPathArray;                                               
     [self.dataMArr addObject:@{@"text":@"结婚照关",@"down":[http makeHBWWriteURL:@"000001" addValue1:@"01" address2:@"000201" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000001" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"女鬼回",@"down":[http makeHBWWriteURL:@"000004" addValue1:@"01" address2:@"000003" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000004" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"女鬼出",@"down":[http makeHBWWriteURL:@"000003" addValue1:@"01" address2:@"000004" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000003" addValue:@"00"]}];
+    
+    [self.myCollectionView.stateCells removeAllObjects];
     [self.myCollectionView reloadData];
 }
 
@@ -340,11 +347,17 @@ NSArray<NSString*> *urlPathArray;                                               
     MyCollectionViewCell* cell = sender;
     if([data isEqualToString:@"false"]){
         [[NSOperationQueue mainQueue] addOperation:[NSBlockOperation blockOperationWithBlock:^{
-            [cell.button setBackgroundImage:imgDumpIsNotReady forState:UIControlStateNormal];
+            if(!cell.stateBack)
+                [cell.button setBackgroundImage:imgDumpIsNotReady forState:UIControlStateNormal];
+            else
+                [cell.button setBackgroundImage:imgDumpIsReady forState:UIControlStateNormal];
         }]];
     }else if([data isEqualToString:@"true"]){
         [[NSOperationQueue mainQueue] addOperation:[NSBlockOperation blockOperationWithBlock:^{
-            [cell.button setBackgroundImage:imgDumpIsReady forState:UIControlStateNormal];
+            if(!cell.stateBack)
+                [cell.button setBackgroundImage:imgDumpIsReady forState:UIControlStateNormal];
+            else
+                [cell.button setBackgroundImage:imgDumpIsNotReady forState:UIControlStateNormal];
         }]];
     }
 }
