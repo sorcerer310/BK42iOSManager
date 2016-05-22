@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "UITextImage.h"
 
 @interface ViewController ()
 
@@ -15,9 +16,9 @@
 @implementation ViewController
 
 @synthesize segmentControl;
-//@synthesize labelDumpIsReady;
+@synthesize leftSwipeGestureRecognizer,rightSwipeGestureRecognizer;
+
 NetHttpUtils *http;                                                             //用于通讯的http对象
-//UIButton *btDumpIsReady;                                                        //敲鼓状态的按钮
 UIImage *imgDumpIsReady;                                                        //敲鼓状态准备好的绿色按钮
 UIImage *imgDumpIsNotReady;                                                     //敲鼓状态未准备好的红色按钮
 NSArray<NSString*> *urlPathArray;                                               //保存每个tab用到的服务器地址
@@ -30,12 +31,15 @@ NSArray<NSString*> *urlPathArray;                                               
                        @"http://192.168.1.111:8080/pgc2/",nil];
     
     //设置服务器路径,默认为第一个界面的路径
+    //    http = [[NetHttpUtils alloc] initWithUrlPath:@"http://192.168.199.202:8080/pgc2/"];
     http = [[NetHttpUtils alloc] initWithUrlPath:urlPathArray[0]];
-//    http = [[NetHttpUtils alloc] initWithUrlPath:@"http://192.168.199.202:8080/pgc2/"];
     http.delegate = self;                                                       //设置http的委托对象
     //初始化按钮的两个状态图片
     imgDumpIsReady = [UIImage imageNamed:@"dumpIsReady.png"];
     imgDumpIsNotReady = [UIImage imageNamed:@"dumpIsNotReady.png"];
+    //初始化数组
+    self.dataMArr = [NSMutableArray array];
+    
     //初始化第一个界面
     [self setupButtonForMyCollectionView0];
     self.myCollectionView.stateCells = [[NSMutableArray alloc]init];
@@ -62,7 +66,18 @@ NSArray<NSString*> *urlPathArray;                                               
     self.myCollectionView.mj_header = header;
     header.lastUpdatedTimeLabel.hidden = YES;
     
+    //设置手势处理
+    self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    
+    [self.view addGestureRecognizer:self.leftSwipeGestureRecognizer];
+    [self.view addGestureRecognizer:self.rightSwipeGestureRecognizer];
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -71,7 +86,6 @@ NSArray<NSString*> *urlPathArray;                                               
 
 /**
  *  SegmentedControl选择不同的tab呈现不同的界面
- *
  *  @param sender 发送消息的SegmentedControl控件
  */
 -(void)segmentControlAction:(UISegmentedControl*)sender{
@@ -79,40 +93,36 @@ NSArray<NSString*> *urlPathArray;                                               
     switch(index){
         case 0:
             [self setupButtonForMyCollectionView0];
-            http.urlpath = urlPathArray[0];
             [self.myCollectionView.mj_header executeRefreshingCallback];        //执行刷新的操作
             break;
         case 1:
             [self setupButtonForMyCollectionView1];
-            http.urlpath = urlPathArray[1];
             [self.myCollectionView.mj_header executeRefreshingCallback];        //执行刷新的操作
             break;
         case 2:
             [self setupButtonForMyCollectionView2];
-            http.urlpath = urlPathArray[2];
             [self.myCollectionView.mj_header executeRefreshingCallback];        //执行刷新的操作
             break;
     }
-
-//    [self.myCollectionView.mj_header beginRefreshing];                          //执行刷新的开始动画
 }
 
 
 
 /**
- *  设置回到三国的所有的按钮
+ *  设置卧龙的考验的所有的按钮
  */
 -(void)setupButtonForMyCollectionView0{
-    self.dataMArr = [NSMutableArray array];
+    http.urlpath = urlPathArray[0];
+    [self.dataMArr removeAllObjects];
     [self.dataMArr addObject:@{@"text":@"敲鼓状态",@"down":@"plc_state_query?point=dumpIsReady",@"up":@"",@"type":@"state"}];
-    [self.dataMArr addObject:@{@"text":@"复位",@"down":@"plc_send_serial?type=click&area=w&address1=000500&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"通道锁1",@"down":@"plc_send_serial?type=click&area=w&address1=000501&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"通道锁2",@"down":@"plc_send_serial?type=click&area=w&address1=000502&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"船舱锁",@"down":@"plc_send_serial?type=click&area=w&address1=000503&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"祭坛锁",@"down":@"plc_send_serial?type=click&area=w&address1=000504&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"大道锁",@"down":@"plc_send_serial?type=click&area=w&address1=000505&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"华容道锁",@"down":@"plc_send_serial?type=click&area=w&address1=000506&val1=01&readOrWrite=write",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"通关锁",@"down":@"plc_send_serial?type=click&area=w&address1=000507&val1=01&readOrWrite=write",@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"复位",@"down":@"",@"up":[http makeClickWWriteURL:@"000500" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"通道锁1",@"down":@"",@"up":[http makeClickWWriteURL:@"000501" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"通道锁2",@"down":@"",@"up":[http makeClickWWriteURL:@"000502" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"船舱锁",@"down":@"",@"up":[http makeClickWWriteURL:@"000503" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"祭坛锁",@"down":@"",@"up":[http makeClickWWriteURL:@"000504" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"大道锁",@"down":@"",@"up":[http makeClickWWriteURL:@"000505" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"华容道锁",@"down":@"",@"up":[http makeClickWWriteURL:@"000506" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"通关锁",@"down":@"",@"up":[http makeClickWWriteURL:@"000507" addValue:@"01"]}];
     [self.dataMArr addObject:@{@"text":@"星阵门开",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000600&address2=000700&val1=00&val2=01&readOrWrite=write"
                                ,@"up":@"plc_send_serial?type=nomal&area=w&address1=000700&val1=00&readOrWrite=write"}];
     [self.dataMArr addObject:@{@"text":@"星阵门关",@"down":@"plc_send_serial?type=h-bridge&area=w&address1=000600&address2=000700&val1=01&val2=00&readOrWrite=write",@"up":@"plc_send_serial?type=nomal&area=w&address1=000600&val1=00&readOrWrite=write"}];
@@ -126,36 +136,38 @@ NSArray<NSString*> *urlPathArray;                                               
 }
 
 /**
- *  设置三国卧龙的考验的界面
+ *  设置八阵图的界面
  */
 -(void)setupButtonForMyCollectionView1{
+    http.urlpath = urlPathArray[1];
     [self.dataMArr removeAllObjects];
-    
-    [self.dataMArr addObject:@{@"text":@"复位",@"down":[http makeClickWWriteURL:@"000500" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"续命灯开",@"down":[http makeClickWWriteURL:@"000501" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"续命灯加",@"down":@"",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"续命灯复",@"down":@"",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"朱雀门1",@"down":[http makeClickWWriteURL:@"000700" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"朱雀门2",@"down":[http makeClickWWriteURL:@"000708" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"朱雀通道",@"down":[http makeClickWWriteURL:@"000701" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"朱雀武器",@"down":[http makeClickWWriteURL:@"000702" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"白虎门",@"down":[http makeClickWWriteURL:@"000703" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"白虎匕首",@"down":@"",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"白虎铁链",@"down":[http makeClickWWriteURL:@"000704" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"白虎车1",@"down":[http makeClickWWriteURL:@"000705" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"白虎车2",@"down":[http makeClickWWriteURL:@"000706" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"白虎武器",@"down":[http makeClickWWriteURL:@"000709" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"玄武门",@"down":[http makeClickWWriteURL:@"000707" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"玄武按钮",@"down":[http makeClickWWriteURL:@"000509" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"玄武电容复位",@"down":@"",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"青龙沙盘",@"down":[http makeClickWWriteURL:@"000711" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"青龙通道",@"down":[http makeClickWWriteURL:@"000712" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"青龙按钮",@"down":@"",@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"青龙武器",@"down":[http makeClickWWriteURL:@"000715" addValue:@"01"],@"up":@""}];
+//    [self.dataMArr addObject:@{@"text":@"复位",@"down":@"",@"up":[http makeClickWWriteURL:@"000500" addValue:@"01"]}];
+    //此处按下与抬起做了两个操作，按下复位5.00点，抬起设置5.10点用来复位若干W点
+    [self.dataMArr addObject:@{@"text":@"复位",@"down":[http makeClickWWriteURL:@"000500" addValue:@"01"],@"up":[http makeClickWWriteURL:@"00050A" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"七星灯",@"down":@"plc_state_query?point=",@"up":@"",@"type":@"number"}];
+    [self.dataMArr addObject:@{@"text":@"大门开",@"down":@"",@"up":[http makeClickWWriteURL:@"00070D" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"续命灯开",@"down":@"",@"up":[http makeClickWWriteURL:@"000501" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"续命复位",@"down":@"",@"up":[http makeClickWWriteURL:@"000601" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"朱雀门开",@"down":@"",@"up":[http makeClickWWriteURL:@"000700" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"朱雀通道",@"down":@"",@"up":[http makeClickWWriteURL:@"000701" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"朱雀武器",@"down":@"",@"up":[http makeClickWWriteURL:@"000702" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"朱雀通关",@"down":@"",@"up":[http makeClickWWriteURL:@"000708" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"白虎门",@"down":@"",@"up":[http makeClickWWriteURL:@"000703" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"白虎铁链",@"down":@"",@"up":[http makeClickWWriteURL:@"000704" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"车零件1",@"down":@"",@"up":[http makeClickWWriteURL:@"000705" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"车零件2",@"down":@"",@"up":[http makeClickWWriteURL:@"000706" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"白虎武器",@"down":@"",@"up":[http makeClickWWriteURL:@"000709" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"玄武门",@"down":@"",@"up":[http makeClickWWriteURL:@"000707" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"分贝通关",@"down":@"",@"up":[http makeClickWWriteURL:@"000408" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"玄武酒坛",@"down":@"",@"up":[http makeClickWWriteURL:@"000509" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"玄武武器",@"down":@"",@"up":[http makeClickWWriteURL:@"00070A" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"青龙沙盘",@"down":@"",@"up":[http makeClickWWriteURL:@"00070B" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"青龙通道",@"down":@"",@"up":[http makeClickWWriteURL:@"00070C" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"青龙武器",@"down":@"",@"up":[http makeClickWWriteURL:@"00070F" addValue:@"01"]}];
     [self.dataMArr addObject:@{@"text":@"大厅印升",@"down":[http makeHBWWriteURL:@"000505" addValue1:@"01" address2:@"000605" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000505" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"大厅印降",@"down":[http makeHBWWriteURL:@"000605" addValue1:@"01" address2:@"000505" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000605" addValue:@"00"]}];
-    [self.dataMArr addObject:@{@"text":@"白虎车进",@"down":[http makeHBWWriteURL:@"000603" addValue1:@"01" address2:@"000503" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000603" addValue:@"00"]}];
-    [self.dataMArr addObject:@{@"text":@"白虎车退",@"down":[http makeHBWWriteURL:@"000503" addValue1:@"01" address2:@"000603" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000503" addValue:@"00"]}];
+    [self.dataMArr addObject:@{@"text":@"白虎车退",@"down":[http makeHBWWriteURL:@"000603" addValue1:@"01" address2:@"000503" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000603" addValue:@"00"]}];
+    [self.dataMArr addObject:@{@"text":@"白虎车进",@"down":[http makeHBWWriteURL:@"000503" addValue1:@"01" address2:@"000603" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000503" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"玄武桥升",@"down":[http makeHBWWriteURL:@"000604" addValue1:@"01" address2:@"000504" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000604" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"玄武桥降",@"down":[http makeHBWWriteURL:@"000504" addValue1:@"01" address2:@"000604" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000504" addValue:@"00"]}];
     
@@ -167,18 +179,21 @@ NSArray<NSString*> *urlPathArray;                                               
  *  设置凶宅界面
  */
 -(void)setupButtonForMyCollectionView2{
+    NSLog(@"setupButtonForMyCollectionView2");
+    http.urlpath = urlPathArray[2];
     [self.dataMArr removeAllObjects];
     [self.dataMArr addObject:@{@"text":@"浇花状态",@"down":@"plc_state_query?point=i0.11",@"up":@"",@"type":@"state",@"back":@"YES"}];
     [self.dataMArr addObject:@{@"text":@"敲门状态",@"down":@"plc_state_query?point=i0.09",@"up":@"",@"type":@"state"}];
-    [self.dataMArr addObject:@{@"text":@"复位",@"down":[http makeClickWWriteURL:@"000100" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"脚踏灯亮",@"down":[http makeClickWWriteURL:@"000505" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"通风口开",@"down":[http makeClickWWriteURL:@"00010A" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"梳妆台锁",@"down":[http makeClickWWriteURL:@"000700" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"娃娃区锁",@"down":[http makeClickWWriteURL:@"000600" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"投影仪亮",@"down":[http makeClickWWriteURL:@"00010C" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"屏风门开",@"down":[http makeClickWWriteURL:@"00010B" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"四画灯灭",@"down":[http makeClickWWriteURL:@"000600" addValue:@"01"],@"up":@""}];
-    [self.dataMArr addObject:@{@"text":@"女鬼音效",@"down":[http makeClickWWriteURL:@"" addValue:@""],@"up":@""}];
+    [self.dataMArr addObject:@{@"text":@"复位",@"down":@"",@"up":[http makeClickWWriteURL:@"000100" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"脚踏灯亮",@"down":@"",@"up":[http makeClickWWriteURL:@"000505" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"通风口开",@"down":@"",@"up":[http makeClickWWriteURL:@"00010A" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"梳妆台锁",@"down":@"",@"up":[http makeClickWWriteURL:@"000700" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"娃娃区锁",@"down":@"",@"up":[http makeClickWWriteURL:@"000600" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"投影仪亮",@"down":@"",@"up":[http makeClickWWriteURL:@"00010C" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"屏风门开",@"down":@"",@"up":[http makeClickWWriteURL:@"00010B" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"四画灯灭",@"down":@"",@"up":[http makeClickWWriteURL:@"000601" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"掉画上电",@"down":@"",@"up":[http makeClickWWriteURL:@"000602" addValue:@"01"]}];
+    [self.dataMArr addObject:@{@"text":@"女鬼音效",@"down":@"",@"up":[http makeClickWWriteURL:@"000800" addValue:@"01"]}];
     [self.dataMArr addObject:@{@"text":@"床抽屉回",@"down":[http makeHBWWriteURL:@"000000" addValue1:@"01" address2:@"000200" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000000" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"床抽屉出",@"down":[http makeHBWWriteURL:@"000200" addValue1:@"01" address2:@"000000" addValue2:@""],@"up":[http makeNomalWWrite:@"000200" addValue:@"00"]}];
     [self.dataMArr addObject:@{@"text":@"结婚照开",@"down":[http makeHBWWriteURL:@"000201" addValue1:@"01" address2:@"000001" addValue2:@"00"],@"up":[http makeNomalWWrite:@"000201" addValue:@"00"]}];
@@ -255,13 +270,19 @@ NSArray<NSString*> *urlPathArray;                                               
     cell.upcmd = dic[@"up"];
     cell.downcmd = dic[@"down"];
     
-    if(dic[@"type"]==nil || ![dic[@"type"] isEqualToString:@"state"]){
+    if(dic[@"type"]==nil ){
         cell.cellType = TYPEBUTTON;                                             //设置cell类型为按钮
         //当代理数据为的类型为空，默认为button；代理数据类型不为state，类型为button
         [cell.button setBackgroundImage:[UIImage imageNamed:@"bt_icon1.png"] forState:UIControlStateNormal];
         [cell.button addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
         [cell.button addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpInside];
-    }else{
+    }
+    else if([dic[@"type"] isEqualToString:@"number"]){
+        cell.cellType = TYPENUMBER;
+        [cell.button setBackgroundImage:[UITextImage imageNamed:@"bt_alaphicon.png"] forState:UIControlStateNormal];
+        [cell.button addTarget:self action:@selector(numberTouch:) forControlEvents:UIControlEventTouchDown];
+    }
+    else if([dic[@"type"] isEqualToString:@"state"]){
         cell.cellType = TYPESTATE;                                              //设置cell类型为状态
         if(dic[@"back"]!=nil && [dic[@"back"] isEqualToString:@"YES"])
             cell.stateBack = YES;                                               //如果取反状态将取反状态标识设置为YES
@@ -319,6 +340,7 @@ NSArray<NSString*> *urlPathArray;                                               
     if([sender.superview.superview isKindOfClass:[MyCollectionViewCell class]]){
         MyCollectionViewCell *cell = (MyCollectionViewCell *)(sender.superview.superview);
         if(![cell.downcmd isEqualToString:@""]){
+            
             [http sendCommand:cell.downcmd sender:cell];
         }
     }
@@ -334,6 +356,65 @@ NSArray<NSString*> *urlPathArray;                                               
         MyCollectionViewCell *cell = (MyCollectionViewCell *)(sender.superview.superview);
         if(![cell.upcmd isEqualToString:@""]){
             [http sendCommand:cell.upcmd sender:cell];
+        }
+    }
+}
+
+int starCount = 0;
+int starSum = 0;
+-(void)numberTouch:(UIButton*)sender{
+    if([sender.superview.superview isKindOfClass:[MyCollectionViewCell class]]){
+        MyCollectionViewCell *cell = (MyCollectionViewCell *)(sender.superview.superview);
+        if(![cell.downcmd isEqualToString:@""]){
+//            [http sendCommand:cell.downcmd sender:cell];
+//            NSString *urlpath = pUrlPath +cell.downcmd;
+
+            
+            for (int i=0; i<7; i++) {
+                
+                NSURL *fullUrl = [NSURL URLWithString:[[[http.urlpath stringByAppendingString:cell.downcmd] stringByAppendingString:@"O101.0"] stringByAppendingString:[NSString stringWithFormat:@"%d",i]]];
+                
+                NSLog(@"%@",fullUrl);
+                NSURLRequest *request = [NSURLRequest requestWithURL:fullUrl];
+                NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+                config.timeoutIntervalForRequest = 3;
+                config.timeoutIntervalForResource = 3;
+                NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+                
+                //    NSURLSession *session = [NSURLSession sharedSession];
+                //    session.configuration.timeoutIntervalForResource = 3;
+                NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                        completionHandler:
+                                              ^(NSData *data,NSURLResponse *response,NSError *error){
+
+                                                  NSString * sdata = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                  NSLog(@"receiveData:%@",sdata);
+                                                  if([sdata isEqualToString:@"true"]){
+                                                      starSum++;
+                                                  }
+                                                  starCount++;
+                                                  
+                                                  //如果7次数据全部返回做最后操作
+                                                  if(starCount==7){
+                                                      if(starSum==0){
+                                                          [[NSOperationQueue mainQueue] addOperation:[NSBlockOperation blockOperationWithBlock:^{
+                                                              [cell.button setBackgroundImage:[UIImage imageNamed:@"bt_alaphicon.png"] forState:UIControlStateNormal];
+                                                          }]];
+                                                      }else{
+                                                          [[NSOperationQueue mainQueue] addOperation:[NSBlockOperation blockOperationWithBlock:^{
+                                                              [cell.button setBackgroundImage:[UIImage imageNamed:[[NSString stringWithFormat:@"%d", starSum] stringByAppendingString:@".png"]] forState:UIControlStateNormal];
+                                                          }]];
+                                                      }
+                                                      NSLog(@"starSum:%@",[[NSString stringWithFormat:@"%d", starSum] stringByAppendingString:@".png"]);
+                                                  }
+                                              }];
+                [task resume];
+
+            }
+            
+
+            
+            
         }
     }
 }
@@ -362,9 +443,22 @@ NSArray<NSString*> *urlPathArray;                                               
     }
 }
 
-
-
-
+/**
+ *  处理手势函数
+ *  @param sender 手势消息的发送者
+ */
+-(void)handleSwipes:(UISwipeGestureRecognizer *)sender{
+    if(sender.direction==UISwipeGestureRecognizerDirectionLeft){
+        [self.segmentControl setSelectedSegmentIndex:1];
+//        [self.segmentControl setSelectedSegmentIndex:1 animated:YES];
+        NSLog(@"left-------->");
+    }
+    if(sender.direction==UISwipeGestureRecognizerDirectionRight){
+                [self.segmentControl setSelectedSegmentIndex:2];
+//        [self.segmentControl setSelectedSegmentIndex:0 animated:YES];
+        NSLog(@"<--------right");
+    }
+}
 
 
 

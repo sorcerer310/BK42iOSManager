@@ -14,12 +14,15 @@
 #import "MJRefresh.h"
 
 @interface ViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,NetHttpUtilsDelegate>
-@property (strong, nonatomic)NSMutableArray *dataMArr;                          //CollectionViewCell数据源
-@property (weak, nonatomic) IBOutlet MyCollectionView *myCollectionView;        //CollectionView对象
+@property (nonatomic,strong)NSMutableArray *dataMArr;                          //CollectionViewCell数据源
+@property (nonatomic,weak) IBOutlet MyCollectionView *myCollectionView;        //CollectionView对象
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;            //导航条
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;        //选项卡对象
-//@property (weak, nonatomic) IBOutlet UILabel *labelDumpIsReady;                 //敲鼓状态显示
+@property (nonatomic,weak) IBOutlet UINavigationBar *navigationBar;            //导航条
+@property (nonatomic,weak) IBOutlet NYSegmentedControl *segmentControl;        //选项卡对象
+
+@property (nonatomic,strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;//左滑动手势
+@property (nonatomic,strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;//右滑动手势
+
 
 @end
 

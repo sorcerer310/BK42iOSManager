@@ -59,6 +59,12 @@ NSString *action;
                                   }];
     [task resume];
 }
+
+
+
+//-(void)sendCommandWithReceiveData:(NSString *)command  sender:(NSObject *)sender
+
+
 /**
  *  按钮为点击类型，向w区某地址写入数据
  *
@@ -69,12 +75,12 @@ NSString *action;
  */
 -(NSString*)makeClickWWriteURL:(NSString *)address addValue:(NSString *)val{
     NSString *retval = @"";
-    [retval stringByAppendingString:action];
-    [retval stringByAppendingString:@"?type=click&area=w&address1="];
-    [retval stringByAppendingString:address];
-    [retval stringByAppendingString:@"&val1="];
-    [retval stringByAppendingString:val];
-    [retval stringByAppendingString:@"&readOrWrite=write"];
+    retval = [retval stringByAppendingString:action];
+    retval = [retval stringByAppendingString:@"?type=click&area=w&address1="];
+    retval = [retval stringByAppendingString:address];
+    retval = [retval stringByAppendingString:@"&val1="];
+    retval = [retval stringByAppendingString:val];
+    retval = [retval stringByAppendingString:@"&readOrWrite=write"];
     return retval;
 }
 /**
@@ -89,7 +95,7 @@ NSString *action;
  */
 -(NSString*)makeHBWWriteURL:(NSString *)address1 addValue1:(NSString *)val1 address2:(NSString *)address2 addValue2:(NSString *)val2{
     NSString *retval = @"";
-    [retval stringByAppendingFormat:@"%@?type=h-bridge&area=w&address1=%@&address2=%@&val1=%@&val2=%@&readOrWrite=write"
+    retval = [retval stringByAppendingFormat:@"%@?type=h-bridge&area=w&address1=%@&address2=%@&val1=%@&val2=%@&readOrWrite=write"
      ,action,address1,address2,val1,val2];
     return retval;
 }
@@ -103,7 +109,7 @@ NSString *action;
  */
 -(NSString*)makeNomalWWrite:(NSString *)address addValue:(NSString *)val{
     NSString *retval = @"";
-    [retval stringByAppendingFormat:@"%@?type=nomal&area=w&address1=%@&val1=%@&readOrWrite=write"
+    retval = [retval stringByAppendingFormat:@"%@?type=nomal&area=w&address1=%@&val1=%@&readOrWrite=write"
      ,action,address,val];
     return retval;
 }
