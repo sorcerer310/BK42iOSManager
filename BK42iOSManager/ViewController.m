@@ -279,7 +279,8 @@ NSArray<NSString*> *urlPathArray;                                               
     }
     else if([dic[@"type"] isEqualToString:@"number"]){
         cell.cellType = TYPENUMBER;
-        [cell.button setBackgroundImage:[UITextImage imageNamed:@"bt_alaphicon.png"] forState:UIControlStateNormal];
+        [cell.button setBackgroundImage:[UITextImage imageNamed:@"bt_icon1.png"] forState:UIControlStateNormal];
+//        [cell.button setBackgroundImage:[[UITextImage alloc] init] forState:UIControlStateNormal];
         [cell.button addTarget:self action:@selector(numberTouch:) forControlEvents:UIControlEventTouchDown];
     }
     else if([dic[@"type"] isEqualToString:@"state"]){
@@ -405,6 +406,8 @@ int starSum = 0;
                                                               [cell.button setBackgroundImage:[UIImage imageNamed:[[NSString stringWithFormat:@"%d", starSum] stringByAppendingString:@".png"]] forState:UIControlStateNormal];
                                                           }]];
                                                       }
+                                                      starCount = 0;
+                                                      starSum = 0;
                                                       NSLog(@"starSum:%@",[[NSString stringWithFormat:@"%d", starSum] stringByAppendingString:@".png"]);
                                                   }
                                               }];
